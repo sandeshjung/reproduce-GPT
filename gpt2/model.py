@@ -100,7 +100,7 @@ class GPT(nn.Module):
             ))
         self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
 
-    def forward(self, idx):
+    def forward(self, idx, targets=None):
         B, T = idx.size() # shape (B, T)
         assert (
             T <= self.config.block_size
@@ -120,7 +120,10 @@ class GPT(nn.Module):
         # (B, T, n_embd) --> (B, T, vocab_size)
         x = self.transformer.ln_f(x)
         logits = self.lm_head(x)
-        return logits
+        loss = None
+        if targets is not None:
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1))
+        return logits, loss
         
     # code from Andrej Karpathy's nanoGPT:
     # https://github.com/karpathy/nanoGPT/blob/master/model.py#L206C5-L261C21
