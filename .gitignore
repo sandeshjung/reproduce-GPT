@@ -1,0 +1,21 @@
+# Byte-compiled / optimized files
+
+**pycache**/
+\*.py\[cod]
+\*\$py.class
+
+# Virtual environments
+
+venv/
+env/
+ENV/
+
+# Jupyter Notebook checkpoints
+
+.ipynb\_checkpoints/
+
+# Editor temporary files
+
+\*.swp
+\*\~
+.DS\_Store
