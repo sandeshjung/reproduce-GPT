@@ -3,7 +3,7 @@ This repo follows Andrej Karpathy's [build-nanogpt](https://github.com/karpathy/
 
 ### GPT-2
 <div style="display: flex; flex-direction: column; align-items: center;">
-<img src="assets/gpt2.png" alt="gpt architecture" width="400" height="600">
+<img src="assets/gpt2.png" alt="gpt architecture" width="601.5" height="646.5">
 <p style="text-align: center;">Fig. GPT architecture</p>
 </div>
 
