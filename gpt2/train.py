@@ -57,7 +57,12 @@ def train():
     warmup_steps = 10
     max_steps = 50
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, betas=(0.9, 0.95), eps=1e-8)
+    # optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, betas=(0.9, 0.95), eps=1e-8)
+
+    # The device.type attribute will be the string "cuda" or "cpu", which is what the method is expecting. 
+    # This change will allow the code to correctly detect when fused AdamW should be used.
+    optimizer = model.configure_optimizer(weight_decay=0.1, lr=6e-4, device=device.type)
+    
     for i in range(50):
         t0 = time.time()
         x, y = train_loader.next_batch()
