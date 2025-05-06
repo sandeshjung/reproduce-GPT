@@ -7,7 +7,7 @@ from dataloader import DataLoader
 def train():
     # initialize the model.
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = GPT(GPTConfig())
+    model = GPT(GPTConfig(vocab_size=50304)) # increasing vocab size to nice number
     model.to(device)
     # This will cost initial compilation time but increase the training speed
     # This will see the entire code which allows the compiler to know which code
