@@ -19,3 +19,6 @@ ENV/
 \*.swp
 \*\~
 .DS\_Store
+
+.vscode/
+data/edu_fineweb*

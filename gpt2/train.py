@@ -80,10 +80,23 @@ def train():
     # if torch.cuda.is_available():
     #     torch.cuda.manual_seed(1337)
 
+    """"
+    --------------------------------------------------
+    MAKE CHANGES WHILE TRAINING
+    --------------------------------------------------
+    """
+
+    # initialize the hyperparameters.
+    max_lr = 6e-4
+    min_lr = max_lr * 0.1  # 10% of max_lr.
+    warmup_steps = 22888 # 375000000 / 2^14 = 22888
+    max_steps = 610351 # 10e9 / 2^14 = 610351
+
     # total_batch_size = 524288 # 2^19, ~0.5M tokens (batch size) <---- in the paper
     total_batch_size = 16384 # 2^14
     B = 1 
     T = 1024
+    
     assert(
         total_batch_size % (B * T * ddp_world_size) == 0
         ), "total_batch_size must be divisible by (B * T * ddp_world_size)."
@@ -98,6 +111,7 @@ def train():
         T=T,
         process_rank=ddp_rank,
         num_processes=ddp_world_size,
+        split="train"
         )
 
     model = GPT(GPTConfig(vocab_size=50304)) # increasing vocab size to nice number
@@ -114,12 +128,7 @@ def train():
     raw_model = model.module if ddp else model # underlying model
     torch.set_float32_matmul_precision('high')
 
-    # initialize the hyperparameters.
-    max_lr = 6e-4
-    min_lr = max_lr * 0.1  # 10% of max_lr.
-    warmup_steps = 10
-    max_steps = 50
-
+    
     # optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, betas=(0.9, 0.95), eps=1e-8)
 
     # The device.type attribute will be the string "cuda" or "cpu", which is what the method is expecting. 
